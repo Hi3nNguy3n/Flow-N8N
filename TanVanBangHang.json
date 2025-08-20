@@ -1,0 +1,238 @@
+{
+  "name": "TanVanBangHang",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-zalo-tools.zaloLoginByQr",
+      "typeVersion": 1,
+      "position": [
+        -780,
+        -520
+      ],
+      "id": "d2af9b66-2a56-4023-bb26-f17dc6920240",
+      "name": "Zalo Login Via QR Code",
+      "credentials": {
+        "n8nZaloApi": {
+          "id": "eeQgXABAairjmZAB",
+          "name": "zaloN8n"
+        },
+        "zaloApi": {
+          "id": "n3x1hNnGSndoHMAB",
+          "name": "Zalo API Credentials"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.data.content }}",
+        "options": {
+          "systemMessage": "=1. 👋 Chào hỏi và chuẩn bị tư vấn\nKhi khách hàng bắt đầu trò chuyện:\n\nChào hỏi thật thân thiện.\n\nGiới thiệu mình là AI tư vấn của shop thực phẩm chức năng.\n\n✅ Ngay lập tức gọi tool `getpr` để lấy toàn bộ danh sách sản phẩm – giúp luôn sẵn sàng tư vấn khi khách có nhu cầu.\n\n2. 🧴 Tư vấn sản phẩm & khai thác nhu cầu\nKhi khách hỏi về bất kỳ sản phẩm nào, luôn:\n\nGọi tool `getpr` với input là tên sản phẩm để lấy thông tin chi tiết, bao gồm:\n\n✅ Thành phần\n\n✅ Công dụng\n\n✅ Cách dùng\n\n✅ Giá bán\n\n✅ Ảnh minh họa (nếu có)\n\n⚠️ Không lấy mô tả sản phẩm từ tool `getpr`\n\n.\n\nSau khi có thông tin, phản hồi theo định dạng JSON bắt buộc như sau:\n\n✅ Nếu có ảnh sản phẩm:\n\n{\n  \"text\": \"Đây là sản phẩm [Tên sản phẩm] hỗ trợ [công dụng]. Anh/chị xem thêm hình ảnh sản phẩm bên dưới.\",\n  \"img\": \"https://link-anh.jpg\"\n}\n❌ Nếu không có ảnh sản phẩm:\njson\nCopy\nEdit\n{\n  \"text\": \"Hiện tại sản phẩm này chưa có ảnh minh họa, em sẽ gửi thông tin chi tiết về sản phẩm cho anh/chị.\",\n  \"img\": \"\"\n}\n3. 📌 Trả lời thắc mắc về sản phẩm\nKhi khách hỏi về:\n\nThành phần\n\nCông dụng\n\nCách dùng, v.v.\n\n👉 Luôn gọi lại tool getpr theo tên sản phẩm để lấy thông tin chính xác nhất.\n\n💬 Phản hồi phải:\n\nDễ hiểu\n\nĐúng chuyên môn\n\nThân thiện, rõ ràng\n\n4. ✅ Chốt đơn hàng\nKhi khách muốn đặt mua, hãy xác nhận đủ các thông tin sau:\n\nHọ tên\n\nSố điện thoại\n\nĐịa chỉ nhận hàng\n\nTên sản phẩm\n\n💡 Luôn giữ thái độ niềm nở, thân thiện, và khuyến khích khách chốt đơn một cách tự nhiên.\n\n5. 🚫 Giới hạn nội dung\nChỉ tư vấn và trả lời trong phạm vi sản phẩm sức khỏe, thực phẩm chức năng.\n\nKhông được trả lời các câu hỏi ngoài chủ đề.\n\nChỉ dùng dữ liệu lấy từ tool `getpr` – không suy đoán hoặc trả lời ngoài dữ liệu có sẵn.\n\n6. 📦 Định dạng bắt buộc cho mọi câu trả lời\nLuôn xuất kết quả ở dạng JSON:\n\nTrường \"text\": Nội dung trả lời\n\nTrường \"img\": Link ảnh sản phẩm (hoặc \"\" nếu không có)\n\n7. 🔁 Lưu ý then chốt\nLuôn kiểm tra và chèn ảnh sản phẩm nếu có.\n\nMỗi lần tư vấn sản phẩm – bắt buộc gọi tool `getpr`.\n\nTrả lời với thái độ chuyên nghiệp – thân thiện – hiệu quả."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -680,
+        -320
+      ],
+      "id": "a375e892-1019-4b54-8954-819f1de96234",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {
+          "temperature": 0.4
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        -140
+      ],
+      "id": "a4915166-b0fe-45b4-a416-420039dc0e67",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "JkxhJrrtxVPw2klX",
+          "name": "Google Gemini(PaLM) Api Mua"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const obj = $json.output;\n\n// Nếu là string, loại bỏ ```json và ``` rồi parse\nlet parsed;\nif (typeof obj === 'string') {\n  const clean = obj.replace(/```json|```/g, '').trim();\n  try {\n    parsed = JSON.parse(clean);\n  } catch (e) {\n    parsed = {};\n  }\n} else {\n  parsed = obj;\n}\n\n// Kiểm tra có đủ text và img\nif (parsed.text !== undefined && parsed.img !== undefined) {\n  // Trả về object đã parse (để các node sau dùng trường text và img)\n  return [{ json: parsed }];\n} else {\n  // Nếu không đúng cấu trúc, trả về output gốc bọc object cho n8n\n  return [{ json: { output: obj } }];\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -320,
+        -320
+      ],
+      "id": "16ffeaf4-742a-4e75-978e-1881a91dc2d3",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "eventTypes": [
+          0
+        ]
+      },
+      "type": "n8n-nodes-zalo-tools.zaloMessageTrigger",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        -320
+      ],
+      "id": "f89bb585-f47a-4cc8-b83f-cc9ec8107851",
+      "name": "Zalo Message Trigger",
+      "webhookId": "78ba182c-a913-4049-a9e2-e8b2150d3f60",
+      "credentials": {
+        "zaloApi": {
+          "id": "nFSFWWx5kslL4GrC",
+          "name": "Zalo API Credentials m"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $('Zalo Message Trigger').item.json.message.threadId }}",
+        "message": "={{ $('AI Agent').item.json.output }}",
+        "quote": {},
+        "mentions": {}
+      },
+      "type": "n8n-nodes-zalo-tools.zaloSendMessage",
+      "typeVersion": 4,
+      "position": [
+        -100,
+        -320
+      ],
+      "id": "461778de-de83-4746-826a-b810800e85b7",
+      "name": "Zalo Send Message",
+      "credentials": {
+        "zaloApi": {
+          "id": "nFSFWWx5kslL4GrC",
+          "name": "Zalo API Credentials m"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Zalo Message Trigger').item.json.message.threadId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -600,
+        -100
+      ],
+      "id": "47d46ded-155c-4785-a38a-0cd3ef353e1c",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Lấy thông tin sản phẩm",
+        "operation": "get",
+        "documentURL": "1dN0psc_vbjq9r9iXMTTWWTjadzhU7O1S0N8-6U-rexM"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        -420,
+        -100
+      ],
+      "id": "f3abba96-9379-4fbb-b001-f63809ba38e4",
+      "name": "getpr",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "tJSASlnM3IWtozGG",
+          "name": "GoogleMua"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Zalo Send Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zalo Message Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getpr": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "55a2945b-2438-4b45-b8d9-97dbb44a9192",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc8021218435b486ef7b53fee178d394950410d528a66a665743202f9e194941"
+  },
+  "id": "pkjU15GtaXpC3QYj",
+  "tags": []
+}

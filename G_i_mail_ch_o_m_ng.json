@@ -1,0 +1,506 @@
+{
+  "name": "Gửi mail chào mừng",
+  "nodes": [
+    {
+      "parameters": {
+        "sendTo": "={{ $json[\"Email cá nhân SV\"] }}",
+        "subject": "THƯ CHÀO MỪNG SINH VIÊN MỚI",
+        "message": "=<!DOCTYPE html>\n<html lang=\"vi\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Thư chào mừng Tân sinh viên</title>\n  <style>\n    body {\n      font-family: Arial, sans-serif;\n      line-height: 1.6;\n      background-color: #f9f9f9;\n      color: #333;\n      padding: 20px;\n    }\n    .container {\n      background: #fff;\n      padding: 30px;\n      border-radius: 10px;\n      max-width: 700px;\n      margin: auto;\n      box-shadow: 0 0 10px rgba(0,0,0,0.1);\n    }\n    .logo {\n      text-align: center;\n      margin-bottom: 20px;\n    }\n    .logo img {\n      max-width: 200px;\n      height: auto;\n    }\n    h2 {\n      color: #d42a2a;\n    }\n    .center-title {\n      text-align: center;\n      text-transform: uppercase;\n      font-size: 28px;\n    }\n    ul {\n      list-style-type: none;\n      padding-left: 20px;\n    }\n    ul li::before {\n      content: \"✔ \";\n      color: green;\n      font-weight: bold;\n    }\n    ul li {\n      margin-bottom: 5px;\n    }\n    .highlight {\n      font-weight: bold;\n      color: #d42a2a;\n    }\n    .info-box {\n      background: #f1f1f1;\n      padding: 15px;\n      border-left: 5px solid #d42a2a;\n      margin: 15px 0;\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"logo\">\n      <img src=\"https://www.caodangvietmy.edu.vn/wp-content/uploads/2025/01/logo-caodangvietmy-new.png\" alt=\"Logo Trường Cao đẳng Việt Mỹ\">\n    </div>\n\n    <h2 class=\"center-title\">THƯ CHÀO MỪNG</h2>\n    <p>Chào mừng bạn đến với <strong>Trường Cao đẳng Việt Mỹ</strong> – Một hành trình mới bắt đầu!</p>\n    <p>Thân gửi Tân sinh viên <span class=\"highlight\">{{ $json['Họ'] }} {{ $json['Tên'] }}</span>,</p>\n\n    <p>Trường Cao đẳng Việt Mỹ xin chúc mừng bạn đã chính thức trở thành thành viên mới trong cộng đồng sinh viên năng động và sáng tạo của nhà trường!</p>\n\n    <p>⮚ Hành trình của bạn tại Cao đẳng Việt Mỹ sẽ là một chặng đường tuyệt vời để:</p>\n    <ul>\n      <li>Trang bị kiến thức chuyên môn thực tiễn</li>\n      <li>Phát triển kỹ năng mềm và kỹ năng nghề nghiệp</li>\n      <li>Tham gia các hoạt động ngoại khóa – câu lạc bộ – kiến tập thực tế</li>\n    </ul>\n\n    <div class=\"info-box\">\n      <p><strong>\"Nhằm duy trì kết nối và quản lý thông tin hiệu quả, nhà trường cấp mã số sinh viên để bạn sử dụng trong các hệ thống quản lý học tập.\"</strong></p>\n      <p><strong>Mã số sinh viên của bạn:</strong> <span class=\"highlight\">{{ $json.MSSV }}</span></p>\n    </div>\n\n    <p>Một vài thông tin quan trọng bạn cần lưu ý:</p>\n    <ul>\n      <li><strong>Tài khoản sinh viên:</strong> Thông tin tài khoản UMS và hướng dẫn kích hoạt phần mềm UMS (phần mềm để xem thời khóa biểu, điểm danh, điểm số trong suốt thời gian học) sẽ được phòng đào tạo gửi đến sinh viên trước ngày nhập học chính thức (trừ trường hợp sinh viên nhập học trễ).</li>\n      <li><strong>Liên hệ hỗ trợ:</strong> Nếu bạn có bất kỳ thắc mắc nào trong quá trình nhập học và chuẩn bị, vui lòng liên hệ Trung tâm Hành chính và Dịch vụ Sinh viên:\n        <ul style=\"list-style-type: none;\">\n          <li>Email: <a href=\"mailto:dichvusinhvien@caodangvietmy.edu.vn\">dichvusinhvien@caodangvietmy.edu.vn</a></li>\n          <li>SĐT: <a href=\"tel:0938813213\">0938.813.213</a></li>\n        </ul>\n      </li>\n    </ul>\n\n    <p>⮚ Hãy sẵn sàng cho một hành trình học tập khác biệt, thực tiễn và truyền cảm hứng! Việt Mỹ luôn đồng hành cùng bạn từ ngày đầu tiên đến ngày bạn tốt nghiệp và bước vào thị trường lao động tự tin, bản lĩnh.</p>\n\n    <p>Một lần nữa, <strong>chào mừng bạn đến với gia đình Việt Mỹ!</strong></p>\n\n    <p><strong>Sinh viên vui lòng phản hồi email này và thường xuyên kiểm tra email/spam để không bỏ lỡ thông tin nhé!</strong></p>\n\n    <p>Trân trọng,<br>\n    <strong>Trung tâm Hành chính và Dịch vụ Sinh viên</strong><br>\n    <strong>Trường Cao đẳng Việt Mỹ</strong></p>\n  </div>\n</body>\n</html>\n",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Dịch vụ sinh viên CĐ Việt Mỹ"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        -660
+      ],
+      "id": "faaf1363-a29e-4c5b-9323-e4c780dab5ef",
+      "name": "Gmail",
+      "webhookId": "d32c698d-79e7-48dd-a60b-dd638e229f13",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "sLWC5rC6CMf9XTa2",
+          "name": "MailDVSV"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1dK4sKPqRSJujcKILTvJ6RZPlaOCHYzSwk1SQn62gDH8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 835789577,
+          "mode": "list",
+          "cachedResultName": "GuiMail",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dK4sKPqRSJujcKILTvJ6RZPlaOCHYzSwk1SQn62gDH8/edit#gid=835789577"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "MSSV": "={{ $('Google Sheets1').item.json.MSSV }}",
+            "Trạng Thái": "X"
+          },
+          "matchingColumns": [
+            "MSSV"
+          ],
+          "schema": [
+            {
+              "id": "STT",
+              "displayName": "STT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "MSSV",
+              "displayName": "MSSV",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Cơ sở học",
+              "displayName": "Cơ sở học",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Đối tượng tốt nghiệp",
+              "displayName": "Đối tượng tốt nghiệp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Họ",
+              "displayName": "Họ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Tên",
+              "displayName": "Tên",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ngành",
+              "displayName": "Ngành",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ngày Sinh",
+              "displayName": "Ngày Sinh",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Giới tính",
+              "displayName": "Giới tính",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nơi sinh",
+              "displayName": "Nơi sinh",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Dân tộc",
+              "displayName": "Dân tộc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Điện thoại",
+              "displayName": "Điện thoại",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Tên Phụ huynh",
+              "displayName": "Tên Phụ huynh",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "SĐT phụ huynh",
+              "displayName": "SĐT phụ huynh",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Đợt nhập học",
+              "displayName": "Đợt nhập học",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email cá nhân SV",
+              "displayName": "Email cá nhân SV",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Trạng Thái",
+              "displayName": "Trạng Thái",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        640,
+        -600
+      ],
+      "id": "919de0ad-3a7f-4435-969c-b099a858c7c6",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleApi": {
+          "id": "jrnmCX9iSYKgqCVP",
+          "name": "serviceAccount"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "098abbb9-395b-4de9-a673-deb13ca23099",
+              "leftValue": "={{ $json.labelIds[0] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        380,
+        -520
+      ],
+      "id": "016359a4-5384-48d9-87b6-37f8c826e216",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "45cffc90-1fbe-426f-a992-3ebae1391ba9",
+              "leftValue": "={{ $json[\"Trạng Thái\"] }}",
+              "rightValue": "X",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -360,
+        -580
+      ],
+      "id": "81068fe7-b986-4ce4-932c-c929720d1670",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -740,
+        -460
+      ],
+      "id": "2ef6d399-083d-4c7b-86b8-f2170827864c",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1dK4sKPqRSJujcKILTvJ6RZPlaOCHYzSwk1SQn62gDH8",
+          "mode": "list",
+          "cachedResultName": "Danh sách cấp mã sinh viên năm 2025",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dK4sKPqRSJujcKILTvJ6RZPlaOCHYzSwk1SQn62gDH8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 835789577,
+          "mode": "list",
+          "cachedResultName": "GuiMail",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dK4sKPqRSJujcKILTvJ6RZPlaOCHYzSwk1SQn62gDH8/edit#gid=835789577"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -560,
+        -460
+      ],
+      "id": "7ccb99eb-f1ec-4da2-9a04-63fbafbe34bf",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleApi": {
+          "id": "jrnmCX9iSYKgqCVP",
+          "name": "serviceAccount"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3edc8792-ce36-4b7a-99e6-f7b0e7fde152",
+              "leftValue": "={{ $json[\"Email cá nhân SV\"] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -80,
+        -600
+      ],
+      "id": "149d4dbe-a887-4930-8c4f-232d317902af",
+      "name": "If2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d8b66198-95cf-44e9-b515-7cf85e240c58",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc8021218435b486ef7b53fee178d394950410d528a66a665743202f9e194941"
+  },
+  "id": "CjuIPllK9WneWGd1",
+  "tags": []
+}

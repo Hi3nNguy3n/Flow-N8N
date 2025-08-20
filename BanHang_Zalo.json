@@ -1,0 +1,932 @@
+{
+  "name": "demo bán hàng",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-zalo-tools.zaloMessageTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2480,
+        20
+      ],
+      "id": "9a261e7f-7175-440d-9fe0-d42bf6ed2426",
+      "name": "Zalo Message Trigger",
+      "webhookId": "d3a297e3-3b32-4264-a65d-8303178e5124",
+      "credentials": {
+        "zaloApi": {
+          "id": "FmT4gkcQAk9TTsJP",
+          "name": "Zalo API Credentials"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $('Zalo Message Trigger').item.json.message.threadId }}",
+        "message": "={{ $json.text }}",
+        "quote": {},
+        "mentions": {}
+      },
+      "type": "n8n-nodes-zalo-tools.zaloSendMessage",
+      "typeVersion": 4,
+      "position": [
+        680,
+        -100
+      ],
+      "id": "4bb52b4d-5a4a-4834-9e19-0c37264b7b51",
+      "name": "Zalo Send Message",
+      "credentials": {
+        "zaloApi": {
+          "id": "FmT4gkcQAk9TTsJP",
+          "name": "Zalo API Credentials"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $('Zalo Message Trigger').item.json.message.threadId }}",
+        "message": "={{ $json.text }}",
+        "quote": {},
+        "mentions": {},
+        "attachments": {
+          "attachment": [
+            {
+              "imageUrl": "={{ $json.img }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-zalo-tools.zaloSendMessage",
+      "typeVersion": 4,
+      "position": [
+        680,
+        60
+      ],
+      "id": "c4407061-f7b0-4a8a-a3b3-25c965b8aa2a",
+      "name": "Zalo Send Message1",
+      "credentials": {
+        "zaloApi": {
+          "id": "FmT4gkcQAk9TTsJP",
+          "name": "Zalo API Credentials"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3bcb3a67-a63b-4644-b8ce-1cd93bdb9382",
+              "leftValue": "={{ $json.img }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        380,
+        100
+      ],
+      "id": "d819c589-b53b-4dff-af58-8136570b3790",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -2060,
+        -400
+      ],
+      "id": "ce74eae0-1519-4099-aaa9-2f3cfb2e76bd",
+      "name": "When chat message received",
+      "webhookId": "6d90af26-efe3-47c3-b208-e2f02956b88c"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-lite-001",
+        "options": {
+          "temperature": 0.4
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1200,
+        220
+      ],
+      "id": "9e54dd40-419f-44df-b002-4d416d3db8cc",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "oqzONR3M0R665oqY",
+          "name": "Google Gemini(PaLM) Api account 6"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "14uQkCGKaSFE16-WlW5_YIe4KkKamoIw8QW5a-2hlkcU",
+          "mode": "list",
+          "cachedResultName": "Bảng tính không có tiêu đề",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14uQkCGKaSFE16-WlW5_YIe4KkKamoIw8QW5a-2hlkcU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14uQkCGKaSFE16-WlW5_YIe4KkKamoIw8QW5a-2hlkcU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Số điện thoại": "={{ $fromAI('sodienthoai',`Trích xuất số điện thoại người đặt hàng từ văn bản trên.`,'string') }}",
+            "Họ tên": "={{ $fromAI('hoten',`Trích xuất họ tên từ văn bản trên.`,'string') }}",
+            "Địa chỉ": "={{ $fromAI('diachi',`Trích xuất địa chỉ người nhận từ văn bản trên.`,'string') }}",
+            "Sản phẩm": "={{ $fromAI('sanphamdat',`Trích xuất sản phẩm người dùng đặt từ văn bản trên.`,'string') }}",
+            "Số lượng": "={{ $fromAI('soluong',`Trích xuất sản phẩm người dùng đặt từ văn bản trên.`,'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Số điện thoại",
+              "displayName": "Số điện thoại",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Họ tên",
+              "displayName": "Họ tên",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Địa chỉ",
+              "displayName": "Địa chỉ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Sản phẩm",
+              "displayName": "Sản phẩm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Số lượng",
+              "displayName": "Số lượng",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Trạng thái",
+              "displayName": "Trạng thái",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        -860,
+        660
+      ],
+      "id": "6cdc55ad-b822-4194-a9e3-9d1f27eba850",
+      "name": "datdon1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DjgJ01dkMh7gmfLl",
+          "name": "hien"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Zalo Message Trigger').item.json.message.threadId }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1060,
+        220
+      ],
+      "id": "ce3eeef2-3def-41c4-bd9f-e464f3f262fb",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "1ORrx2E60rnPZYTEhIsXw-AWWzkEfTfVdpc6s1ZOSP3c"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        -900,
+        220
+      ],
+      "id": "215994a1-d3e7-4e9c-b77e-b4a2dc994249",
+      "name": "thongtinSP",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "YOR3n9pUX5JSPZnK",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Zalo Message Trigger').item.json.message.data.content }}",
+        "options": {
+          "systemMessage": "=1. Chào hỏi & giới thiệu\nKhi khách hàng nhắn tin, chào khách và giới thiệu bạn là AI tư vấn của shop thực phẩm chức năng, sẵn sàng hỗ trợ. Đồng thời gọi tool `thongtinSP` để lấy thông tin sản phẩm của shop, chuẩn bị sẵn cho các bước sau.\n\n2. Khai thác nhu cầu & tư vấn sản phẩm\nKhi khách hỏi về sản phẩm, luôn gọi tool `thongtinSP` để lấy thông tin chi tiết sản phẩm, bao gồm cả link ảnh sản phẩm (nếu có).\n\nNếu có trường link ảnh trong dữ liệu sản phẩm, trả về trường img là link ảnh đó, không cần chờ khách hỏi về ảnh.\n\nNếu không có ảnh, trả về trường img là chuỗi rỗng \"\".\n\n3. Xử lý thắc mắc\nKhi khách hỏi về thành phần, công dụng, cách dùng… hãy gọi tool `thongtinSP` để lấy thông tin chính xác.\n\nGiải đáp thắc mắc của khách một cách chuyên nghiệp, nội dung trả lời ở trường text trong output JSON.\n\n4. Báo giá & chốt đơn\nKhi khách muốn đặt hàng, yêu cầu khách cung cấp đủ thông tin: Số điện thoại, Họ tên, Địa chỉ, Sản phẩm.\n\nLuôn chốt đơn một cách thân thiện, ưu tiên bán hàng.\n\n5. Quy định về trả lời\nChỉ trả lời đúng phạm vi tư vấn/bán hàng thực phẩm chức năng. Không trả lời câu hỏi ngoài lĩnh vực này.\n\nMỗi lần trả lời, output phải đúng dạng JSON sau:\n\n{\n  \"text\": \"Nội dung trả lời cho khách hàng.\",\n  \"img\": \"link ảnh sản phẩm (nếu có, nếu không thì để chuỗi rỗng)\"\n}\nVí dụ output khi có ảnh:\n\njson\nCopy\nEdit\n{\n  \"text\": \"Đây là sản phẩm Beauty Collagen Plus hỗ trợ làm đẹp da. Anh/chị xem thêm hình ảnh sản phẩm bên dưới.\",\n  \"img\": \"https://example.com/image_link_beauty_collagen.jpg\"\n}\nVí dụ output khi không có ảnh:\n\njson\nCopy\nEdit\n{\n  \"text\": \"Hiện tại sản phẩm này chưa có ảnh minh họa, em sẽ gửi thông tin chi tiết về sản phẩm cho anh/chị.\",\n  \"img\": \"\"\n}\nLưu ý:\n \n\nLuôn kiểm tra trường ảnh trong dữ liệu từ tool `thongtinSP` khi tư vấn sản phẩm, không cần chờ khách hỏi về ảnh.\n\nGiữ thái độ thân thiện, ưu tiên chốt đơn.\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -1140,
+        -20
+      ],
+      "id": "73eafa85-287e-45a5-9f53-fa89be69c643",
+      "name": "tuvan"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-lite-001",
+        "options": {
+          "temperature": 0.4
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1320,
+        620
+      ],
+      "id": "7d3c29e8-c64c-4c2c-bea4-20d0ec0091d9",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Xgm6ZLUYRv2oktWy",
+          "name": "Google Gemini(PaLM) Api account 8"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Zalo Message Trigger').item.json.message.threadId }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1080,
+        660
+      ],
+      "id": "2b9665bf-c014-4362-a7c4-4537bc38f5f6",
+      "name": "Simple Memory2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Zalo Message Trigger').item.json.message.data.content }}",
+        "options": {
+          "systemMessage": "=Bạn là AI Agent chốt đơn cho shop thực phẩm chức năng. Khi khách hàng đã cung cấp đầy đủ các thông tin sau:\n\nSố điện thoại\n\nHọ tên\n\nĐịa chỉ\n\nSản phẩm\n\nSố lượng\n\nBạn phải làm đúng theo các bước sau:\n\n1. Xác nhận lại toàn bộ thông tin với khách\nTổng hợp lại tất cả thông tin đơn hàng (số điện thoại, họ tên, địa chỉ, sản phẩm, số lượng).\n\nTính tổng giá trị đơn hàng: tổng = số lượng × đơn giá.\n\nTrả lời khách, hỏi lại:\n\n\"Anh/chị vui lòng xác nhận lại các thông tin dưới đây trước khi shop tiến hành chốt đơn:\"\n\nSố điện thoại: [Số điện thoại]\n\nHọ tên: [Họ tên]\n\nĐịa chỉ: [Địa chỉ]\n\nSản phẩm: [Sản phẩm]\n\nSố lượng: [Số lượng]\n\nĐơn giá: [Đơn giá] VNĐ\n\nThành tiền: [Tổng giá trị đơn hàng] VNĐ\n\nNếu thông tin đúng, anh/chị vui lòng xác nhận để shop tiến hành đặt hàng. Nếu có gì cần chỉnh sửa, anh/chị hãy gửi lại thông tin chính xác.\n\nNếu có ảnh sản phẩm, đưa link vào trường img, nếu không có thì để chuỗi rỗng.\n\nbắt buộc xác nhận thông tin:\n\n2. Chỉ khi khách xác nhận thông tin là đúng\nSau khi khách xác nhận lại, bạn mới gọi tool `datdon1` để ghi nhận đơn hàng (gồm: Số điện thoại, Họ tên, Địa chỉ, Sản phẩm, Số lượng, Thành tiền).\n\nTrả lời lại khách thông báo đơn hàng đã được ghi nhận thành công, cảm ơn và nhắc khách giữ điện thoại để nhận hàng.\n\n\n3. Quy tắc thực thi\nKhông gọi tool `datdon1` nếu khách chưa xác nhận lại.\n\nNếu khách muốn sửa thông tin, cập nhật lại toàn bộ rồi xác nhận lại trước khi chốt.\n\nLuôn giữ thái độ thân thiện, rõ ràng.\n\nVí dụ prompt cụ thể:\nKhi khách hàng đã gửi đủ thông tin đặt hàng gồm số điện thoại, họ tên, địa chỉ, sản phẩm, số lượng, bạn phải lấy đơn giá sản phẩm từ thông tin sản phẩm, tính tổng tiền = số lượng × đơn giá, sau đó xác nhận lại với khách tất cả thông tin, hỏi khách xác nhận đúng rồi mới gọi tool `datdon1` để ghi nhận đơn hàng.\n\nNếu khách xác nhận, gọi tool `datdon1` để chốt đơn, và trả lời khách. Trước khi cảm ơn thì phải gọi vào tool `datdon1` để lên đơn hàng trước nhé\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -1180,
+        440
+      ],
+      "id": "c245a6d7-dad7-45ef-a29c-f32abb580d1c",
+      "name": "chotdon"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.data.content }}",
+        "options": {
+          "systemMessage": "Hãy phân tích tin nhắn của người dùng. Nếu tư vấn sản phẩm thì trả về tuvan. Nếu khách hàng cung cấp thông tin để đặt đơn thì trả ve chotdon"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -2120,
+        20
+      ],
+      "id": "0be76317-d719-4a9f-8a4c-de73becc2b7d",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-001",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -2140,
+        260
+      ],
+      "id": "d8950fbd-b036-41ab-af25-eb498ebd02f8",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6n2k2q4KRQM0h48O",
+          "name": "Google Gemini(PaLM) Api account 7"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d5e7b45f-e0fa-4938-9531-302ceb8fb592",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "chotdon",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1540,
+        200
+      ],
+      "id": "4cbea009-a880-4b70-a0e0-59da4ae0cc4e",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Zalo Message Trigger').item.json.message.threadId }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1860,
+        260
+      ],
+      "id": "82abc9e9-5bb8-46cb-beb6-213844f92fbb",
+      "name": "Simple Memory3"
+    },
+    {
+      "parameters": {
+        "jsCode": "const obj = $json['text'];\n\n// Nếu là string, loại bỏ ```json và ``` rồi parse\nlet parsed;\nif (typeof obj === 'string') {\n  const clean = obj.replace(/```json|```/g, '').trim();\n  try {\n    parsed = JSON.parse(clean);\n  } catch (e) {\n    parsed = {};\n  }\n} else {\n  parsed = obj;\n}\n\n// Kiểm tra có đủ text và img\nif (parsed.text !== undefined && parsed.img !== undefined) {\n  // Trả về object đã parse (để các node sau dùng trường text và img)\n  return [{ json: parsed }];\n} else {\n  // Nếu không đúng cấu trúc, trả về output gốc bọc object cho n8n\n  return [{ json: { output: obj } }];\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        100,
+        200
+      ],
+      "id": "4c011a71-a995-4c46-96df-e76c2ca01fad",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "Kiểm tra đoạn text sau xem có chứa link hình ảnh (jpg, jpeg, png, gif, webp, svg, bmp, tiff, hoặc link Google Drive/Google Photos) không. Nếu có, tách riêng link ảnh ra khỏi text, trả về đúng định dạng JSON như sau:\n\n{\n  \"text\": \"Nội dung text đã xóa link ảnh.\",\n  \"img\": \"link ảnh (nếu có, nếu không thì để rỗng)\"\n}\n\nChỉ trả về JSON thuần\n"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -280,
+        -20
+      ],
+      "id": "683989c3-55cd-45cc-8318-7037cd4e8c5f",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        180
+      ],
+      "id": "5e4ab2a4-ebbc-44d9-85d5-4cde76d88386",
+      "name": "Google Gemini Chat Model4",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Xgm6ZLUYRv2oktWy",
+          "name": "Google Gemini(PaLM) Api account 8"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "threadId": "={{ $('Zalo Message Trigger').item.json.message.threadId }}",
+        "message": "={{ $json.output }}",
+        "quote": {},
+        "mentions": {}
+      },
+      "type": "n8n-nodes-zalo-tools.zaloSendMessage",
+      "typeVersion": 4,
+      "position": [
+        -820,
+        440
+      ],
+      "id": "ab72a402-ab16-44a9-b015-5b631e1fed64",
+      "name": "Zalo Send Message2",
+      "credentials": {
+        "zaloApi": {
+          "id": "FmT4gkcQAk9TTsJP",
+          "name": "Zalo API Credentials"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "threadId": "8147063981414558283",
+        "message": "=Lỗi rồi. Xem lại flow đi.ThreadID là  {{ $('Zalo Message Trigger').item.json.message.threadId }}",
+        "quote": {},
+        "mentions": {}
+      },
+      "type": "n8n-nodes-zalo-tools.zaloSendMessage",
+      "typeVersion": 4,
+      "position": [
+        980,
+        220
+      ],
+      "id": "e3aa4374-a6f1-4ce3-a803-8794da005049",
+      "name": "Zalo Send Message3",
+      "credentials": {
+        "zaloApi": {
+          "id": "FmT4gkcQAk9TTsJP",
+          "name": "Zalo API Credentials"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Zalo Message Trigger').item.json.message.data.content }}",
+        "options": {
+          "systemMessage": "=Gọi tool 'thongtinSP' để kiểm tra xem câu trả lời sau đây có đúng ý câu hỏi của người dùng không:\n\n{{ $json.output }}\n\nNếu câu trả lời **đúng ý** câu hỏi người dùng, chỉ cần modifi (chỉnh sửa nhỏ nếu cần) và trả về kết quả dưới dạng JSON với cấu trúc:\n\n{\n  \"text\": \"Nội dung câu trả lời đã được chỉnh sửa (nếu cần), rõ ràng và đúng ý người dùng.\",\n  \"img\": \"Link hình ảnh nếu có, nếu không có thì để rỗng\"\n}\n\nNếu câu trả lờikhông đúng ý hoặc không đầy đủ, hãy sửa lại cho đúng và đầy đủ ý câu hỏi người dùng rồi trả về JSON theo cấu trúc trên.\n\nChỉ trả về đúng JSON như trên, không kèm theo giải thích hay văn bản nào khác.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -660,
+        0
+      ],
+      "id": "a17cc45f-e7de-4341-b1a2-7286937ab564",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-lite",
+        "options": {
+          "temperature": 0.4
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -680,
+        200
+      ],
+      "id": "9b59b684-831a-4c49-a5e5-e1b8abb1d1da",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6n2k2q4KRQM0h48O",
+          "name": "Google Gemini(PaLM) Api account 7"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "1ORrx2E60rnPZYTEhIsXw-AWWzkEfTfVdpc6s1ZOSP3c"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        -420,
+        220
+      ],
+      "id": "9628253b-d105-4797-b802-72dfeb851d9a",
+      "name": "thongtinSP1",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "YOR3n9pUX5JSPZnK",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-zalo-tools.zaloLoginByQr",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0e16ff07-8b80-48ef-859d-578bf5fa679c",
+      "name": "Zalo Login Via QR Code",
+      "credentials": {
+        "n8nZaloApi": {
+          "id": "QD8zrAwSi7vymoAX",
+          "name": "n8n Zalo Account Credential account"
+        },
+        "zaloApi": {
+          "id": "FmT4gkcQAk9TTsJP",
+          "name": "Zalo API Credentials"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-zalo-tools.zaloLoginByQr",
+      "typeVersion": 1,
+      "position": [
+        -2360,
+        360
+      ],
+      "id": "a6303b04-5321-4620-a06b-3ec84972fa15",
+      "name": "Zalo Login Via QR Code1",
+      "credentials": {
+        "n8nZaloApi": {
+          "id": "QD8zrAwSi7vymoAX",
+          "name": "n8n Zalo Account Credential account"
+        },
+        "zaloApi": {
+          "id": "FmT4gkcQAk9TTsJP",
+          "name": "Zalo API Credentials"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Zalo Message Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zalo Send Message": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Zalo Send Message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Zalo Send Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Zalo Send Message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "tuvan",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "datdon1": {
+      "ai_tool": [
+        [
+          {
+            "node": "chotdon",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "tuvan",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        []
+      ]
+    },
+    "thongtinSP": {
+      "ai_tool": [
+        [
+          {
+            "node": "tuvan",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "tuvan": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "chotdon",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "chotdon",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "chotdon": {
+      "main": [
+        [
+          {
+            "node": "Zalo Send Message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "chotdon",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "tuvan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory3": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zalo Send Message1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Zalo Send Message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zalo Send Message2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Zalo Send Message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "thongtinSP1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "532c6150-395a-45a3-a147-9b2083c3ec3f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "12f9066a21948decffae769fa8fb98be919339819bda47a03e5d17d7a6bdc08f"
+  },
+  "id": "TbVkbiIJYrvLBmON",
+  "tags": []
+}
